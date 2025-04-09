@@ -3,6 +3,16 @@ const notesContainer = document.querySelector(".notes-container"); //2
 const createBtn = document.querySelector(".btn"); //1
 let notes= document.querySelectorAll (".input-box"); //3
 
+
+function showNotes(){
+    notesContainer.innerHTML= localStorage.getItem("notes");
+}
+showNotes()
+function updateStorage(){
+    localStorage.setItem( "notes", notesContainer.innerHTML);
+
+}
+
 //function to create Notes:= <!--<p contenteditable="true" class="input-box"><img src="img/delete.png"> </p><-->
 
 //<p contenteditable="true" class="input-box"><img src="img/delete.png"> </p><--> 
@@ -27,5 +37,21 @@ createBtn.addEventListener("click",()=>{
 notesContainer.addEventListener("click", function(e){
     if(e.target.tagName === "IMG"){
         e.target.parentElement.remove();
+        updateStorage()
     }
+    else if(e.target.tagName === "p"){
+        notes = document.querySelectorAll(".input-box");
+        notes.forEach( notes => {
+            notes.onkeyup = function(){
+                updateStorage();
+            }
+        })
+    }
+})
+
+// add lines if press Enter 
+document.addEventListener("keydown", event =>{
+    if(event.key === "Enter")
+        document.execCommand("insertLineBreak");
+    event.preventDefault();
 })
